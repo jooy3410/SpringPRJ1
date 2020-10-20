@@ -10,7 +10,7 @@ public class MainController {
 	
 	private Logger log = Logger.getLogger(this.getClass());
 	
-	@RequestMapping(value="index")
+	@RequestMapping(value="safe/index")
 	public String Index() {
 		log.info(this.getClass());
 		
