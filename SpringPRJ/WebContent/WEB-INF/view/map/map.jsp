@@ -3,16 +3,17 @@
 <%@page import="static poly.util.CmmUtil.nvl"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
     
 <%
-	/* Controller로부터 넘겨받은 rList 선언 */
-	List<RestDTO> rList = (List<RestDTO>) request.getAttribute("rList");
-/* 	String SS_ADDR = nvl((String)session.getAttribute("REFINE_ROADNM_ADDR"));
-	String addr[] = new String[10];
-	for(int i =0; i<10; i++) {
-			addr[i] = nvl((String)session.getAttribute("REFINE_ROADNM_ADDR"+i));
-	} */
+   /* Controller로부터 넘겨받은 rList 선언 */
+   List<RestDTO> rList = (List<RestDTO>) request.getAttribute("rList");
+/*    String SS_ADDR = nvl((String)session.getAttribute("REFINE_ROADNM_ADDR"));
+   String addr[] = new String[10];
+   for(int i =0; i<10; i++) {
+         addr[i] = nvl((String)session.getAttribute("REFINE_ROADNM_ADDR"+i));
+   } */
+      
 %>
 <!DOCTYPE html>
 <html>
@@ -42,6 +43,8 @@ mapOption = {
 //지도를 생성합니다    
 var map = new kakao.maps.Map(mapContainer, mapOption); 
 
+
+
 <%for (RestDTO eDTO : rList) {%>
 //주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
@@ -55,13 +58,20 @@ geocoder.addressSearch('<%=nvl(eDTO.getRefine_lotno_addr())%>', function(result,
     var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
     // 결과값으로 받은 위치를 마커로 표시합니다
+   
     var marker = new kakao.maps.Marker({
         map: map,
-        position: coords
+        position: coords,
+        clickable: true,
         
-       
     });
-
+    
+    kakao.maps.event.addListener(marker, 'click', function(mouseEvent) {
+    	alert("페이지로 이동합니다.");
+        location.href="/rest/rest.do"; 
+    	});
+   
+    
     // 인포윈도우로 장소에 대한 설명을 표시합니다
     var infowindow = new kakao.maps.InfoWindow({
         content: '<div style="width:150px;text-align:center;padding:6px 0;" id="marker" onclick="doMarker();"><%=nvl(eDTO.getBizplc_nm())%></div>'
@@ -72,13 +82,14 @@ geocoder.addressSearch('<%=nvl(eDTO.getRefine_lotno_addr())%>', function(result,
     map.setCenter(coords);
 } 
 });
-function doMarker(){
-	
-		alert("페이지로 이동합니다.");
-		location.href="index.do";
-	
-}
 <%}%>
+
+function doMarker(){
+  
+     alert("페이지로 이동합니다.");
+     location.href="/rest/rest.do";
+  
+}
 </script>
 </body>
 </html>
