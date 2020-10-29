@@ -1,5 +1,5 @@
+<%@page import="java.util.HashSet"%>
 <%@page import="poly.dto.RestDTO"%>
-
 <%@page import="static poly.util.CmmUtil.nvl"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -7,6 +7,7 @@
 <%
 	/* Controller로부터 넘겨받은 rList 선언 */
 	List<RestDTO> rList = (List<RestDTO>) request.getAttribute("rList");
+	//HashSet<RestDTO> rList= (HashSet<RestDTO>) request.getAttribute("rList");
 	int i=1;
 %>
 <!DOCTYPE html>
@@ -32,9 +33,8 @@
 		<% for (RestDTO eDTO : rList) { %>
 		<tr>
 			<td><%=i++ %></td>
-			<td><%=nvl(eDTO.getAddr())%></td>
 			<td><%=nvl(eDTO.getBizplc_nm())%></td>
-			
+			<td><%=nvl(eDTO.getRefine_lotno_addr())%></td>
 		</tr>
 		<%} %>
 		</tbody>
