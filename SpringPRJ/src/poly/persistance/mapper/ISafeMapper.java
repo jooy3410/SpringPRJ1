@@ -12,6 +12,9 @@ public interface ISafeMapper {
 	SafeDTO getSafeUserExists(SafeDTO pDTO) throws Exception;
 
 	
+	SafeDTO getUserSafeLoginCheck(SafeDTO pDTO) throws Exception;
+
+	
 
 
 

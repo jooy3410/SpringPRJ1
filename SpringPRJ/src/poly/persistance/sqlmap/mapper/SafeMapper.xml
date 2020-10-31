@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--  JAVA와 연결할 Mapper 파일 설정 -->
-<mapper namespace="poly.persistance.mapper.UserInfoMapper">
+<mapper namespace="poly.persistance.mapper.ISafeMapper">
 
 	<!-- 회원 가입하기(회원정보 등록하기) -->
 	<insert id="insertSafeUserInfo" parameterType="SafeDTO">
 		INSERT INTO SAFEUSER_INFO
 			(
-				USER_ID
-				USER_NAME
-				PASSWORD
-				EMAIL
-				ADDR1
-				ADDR2
-				STORENAME
-				BNUMBER
-				PNUMBER
-				REG_ID
-				REG_DT
-				CHG_ID
+				USER_ID,
+				USER_NAME,
+				PASSWORD,
+				EMAIL,
+				ADDR1,
+				ADDR2,
+				STORENAME,
+				BNUMBER,
+				PNUMBER,
+				REG_ID,
+				REG_DT,
+				CHG_ID,
 				CHG_DT
 			)
 			VALUES(
@@ -46,6 +46,14 @@
 		FROM
 		SAFEUSER_INFO
 		WHERE EMAIL=#{email}
+	</select>
+	
+	<!-- 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 -->
+	<select id="getUserSafeLoginCheck" parameterType="SafeDTO" resultType="SafeDTO">
+		SELECT USER_ID, USER_NAME, EMAIL
+		FROM SAFEUSER_INFO
+		WHERE USER_ID = #{user_id}
+		AND PASSWORD = #{password}
 	</select>
 	
 	

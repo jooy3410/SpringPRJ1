@@ -6,4 +6,6 @@ public interface ISafeService {
 
 	int insertSafeUserInfo(SafeDTO pDTO) throws Exception;
 
+	int getUserSafeLoginCheck(SafeDTO pDTO) throws Exception;
+
 }
