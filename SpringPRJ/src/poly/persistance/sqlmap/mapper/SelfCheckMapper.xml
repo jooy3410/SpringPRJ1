@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="poly.persistance.mapper.ISelfCheckMapper">
+	<insert id="insertSCInfo" parameterType="SelfCheckDTO">
+		INSERT INTO SELF_CHECK
+		(
+			SEQ,
+			AIR,
+			DISTANCE,
+			TIME,
+			SCALE,
+			ACTIVITY,
+			MANAGER,
+			HDISINFECTANT,
+			MASK,
+			ANNOUNCEMENT,
+			DISINFECTION,
+			NAMECHECK
+		)
+		VALUES(
+			(SELECT NVL(MAX(A.SEQ),0)+1 FROM SELF_CHECK A),
+			#{air},
+			#{distance},
+			#{time},
+			#{scale},
+			#{activity},
+			#{manager},
+			#{hdisinfectant},
+			#{mask},
+			#{announcement},
+			#{disinfection},
+			#{namecheck}
+		)
+	</insert>
+</mapper>

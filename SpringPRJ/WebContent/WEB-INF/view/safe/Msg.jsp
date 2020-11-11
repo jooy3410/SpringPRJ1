@@ -2,9 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ page import="poly.util.CmmUtil" %>
 <%@ page import="poly.dto.SafeDTO" %>
+
 <%
 //Controller로부터 전달받은 데이터
 String msg = CmmUtil.nvl((String)request.getAttribute("msg"));
+
+//사업자 회원 결과
 
 //Controller로부터 전달받은 웹(회원정보 입력화면)으로부터 입력받은 데이터(아이디, 이름, 이메일, 주소 등)
 SafeDTO pDTO = (SafeDTO)request.getAttribute("pDTO");
@@ -12,6 +15,14 @@ SafeDTO pDTO = (SafeDTO)request.getAttribute("pDTO");
 if(pDTO == null){
 	pDTO = new SafeDTO();
 }
+
+
+//개인회원결과 
+
+
+
+
+
 %>
 <!DOCTYPE html>
 <html>
@@ -24,5 +35,6 @@ if(pDTO == null){
 </head>
 <body>
 <%=CmmUtil.nvl(pDTO.getUser_name()) %>님의 회원가입을 축하드립니다.
+
 </body>
 </html>

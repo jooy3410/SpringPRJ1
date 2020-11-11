@@ -2,31 +2,26 @@ package poly.controller;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import poly.dto.PagingDTO;
 import poly.dto.RestDTO;
+import poly.dto.SelfCheckDTO;
 import poly.service.IRestService;
-import test.Test;
+import poly.util.CmmUtil;
 
 @Controller
 public class RestController {
@@ -36,152 +31,79 @@ public class RestController {
 
 	private Logger log = Logger.getLogger(this.getClass());
 	
+	
+	
 	@RequestMapping(value = "rest/rest.do", method = RequestMethod.GET)
-	public String RestService(HttpServletRequest request, HttpServletResponse reponse, ModelMap model,HttpSession session) throws Exception {
+	public String rest(HttpServletRequest request, HttpServletResponse reponse, ModelMap model,HttpSession session) throws Exception {
 		log.info(this.getClass().getName() + "rest start!");
 
+		List<String> rList = RestService.getRestInfo();
 		
-		ArrayList<RestDTO> rList= new ArrayList<RestDTO>();
-		ArrayList<RestDTO> r2List = null;
-		
-		int page = 1;   // 페이지 초기값 
-	      try{
-	         while(true){
-	            // parsing할 url 지정(API 키 포함해서)
-	            String url = "https://openapi.gg.go.kr/SafetyRestrntInfo?KEY=12200392d4a94e059fec5a6fa315518c&pIndex="+page+"&pSize=1000";
 	            
-	            DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
-	            DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
-	            Document doc = dBuilder.parse(url);
-	            
-	            
-	            // root tag 
-	            doc.getDocumentElement().normalize();
-	            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-	            
-	            // 파싱할 tag
-	            NodeList nList = doc.getElementsByTagName("row");
-	            
-	            System.out.println("파싱할 리스트 수 : "+ nList.getLength());
-	            
-	            for(int temp = 0; temp < nList.getLength(); temp++){
-	               Node nNode = nList.item(temp);
-	               if(nNode.getNodeType() == Node.ELEMENT_NODE){
-	                  
-	                  Element eElement = (Element) nNode;
-	                  System.out.println("######################");
-	                  //System.out.println(eElement.getTextContent());
-	                  System.out.println("식당번호  : " + Test.getTagValue("SAFETY_RESTRNT_NO", eElement));
-	                  System.out.println("상호명  : " + Test.getTagValue("BIZPLC_NM", eElement));
-	                 // System.out.println("도로명주소  : " + Test.getTagValue("REFINE_ROADNM_ADDR", eElement));
-	                  System.out.println("구주소  : " + Test.getTagValue("REFINE_LOTNO_ADDR", eElement));
-	                  
-	                  RestDTO pDTO = new RestDTO();
-	                 
-	                  pDTO.setSafety_restrnt_no(Test.getTagValue("SAFETY_RESTRNT_NO", eElement));//식당번호
-	                  pDTO.setBizplc_nm(Test.getTagValue("BIZPLC_NM", eElement)); //상호명
-	                  pDTO.setRefine_lotno_addr(Test.getTagValue("REFINE_LOTNO_ADDR", eElement)); //구주소
-	          		  //pDTO.setRefine_roadnm_addr(Test.getTagValue("REFINE_ROADNM_ADDR", eElement)); //도로명주소
-	          		  //pDTO.setRefine_wgs84_lat(Test.getTagValue("REFINE_WGS84_LAT", eElement)); //위도
-	          		  //pDTO.setRefine_wgs84_logt(Test.getTagValue("REFINE_WGS84_LOGT", eElement)); //경도
-	          		
-	          		  rList.add(pDTO);
-	          		  HashSet<RestDTO> pSet = new HashSet<>(rList);
-	          		  r2List = new ArrayList<>(pSet);
-	          		 
-	               }   // for end
-	            }   // if end
-	            
-	            page += 1;
-	            System.out.println("page number : "+page);
-	            if(page > 12){   
-	               break;
-	            }
-	         }   // while end
-	         
-	      } catch (Exception e){   
-	         e.printStackTrace();
-	      }   // try~catch end
+		if(rList == null) {
+	          	rList = new ArrayList<>();
+	    }
+	      
+	    
+        //HashSet<RestDTO> pSet = new HashSet<>(rList);
+        //ArrayList<RestDTO> r2List = new ArrayList<>(pSet);
+	 
 
 	
-		model.addAttribute("rList",r2List);
+		model.addAttribute("rList",rList);
+		
+		rList = null;
+		//pSet = null;
+		//r2List = null;
+		
 		log.info("rest.do end!!");
 		
 		return "/rest/rest";
 	
 	}
 
+	//페이징 컨트롤러
+		@RequestMapping(value="rest/restPaging.do")
+		public String boardList(PagingDTO pDTO, Model model
+				, @RequestParam(value="nowPage", required=false)String nowPage
+				, @RequestParam(value="cntPerPage", required=false)String cntPerPage) throws Exception{
+			
+			int total = RestService.countBoard();
+			
+			if (nowPage == null && cntPerPage == null) {
+				nowPage = "1";
+				cntPerPage = "20";
+			} else if (nowPage == null) {
+				nowPage = "1";
+			} else if (cntPerPage == null) { 
+				cntPerPage = "20";
+			}
+			
+			pDTO = new PagingDTO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+			
+			model.addAttribute("paging", pDTO);
+			model.addAttribute("viewAll", RestService.selectBoard(pDTO));
+			log.info(this.getClass());
+			return "rest/restPaging";
+		}
 	
 	@RequestMapping(value = "map/map.do", method = RequestMethod.GET)
 	public String Map2Service(HttpServletRequest request, HttpServletResponse reponse, ModelMap model,HttpSession session) throws Exception {
 		log.info(this.getClass().getName() + "MAP start!");
-		
-		//List<RestDTO> rList= new ArrayList<>();
 
-		ArrayList<RestDTO> rList= new ArrayList<RestDTO>();
-		//ArrayList<RestDTO> r2List = null;
+		List<String> rList = RestService.getRestInfo();
 		
-		int page = 1;   // 페이지 초기값 
-	      try{
-	         while(true){
-	            // parsing할 url 지정(API 키 포함해서)
-	            String url = "https://openapi.gg.go.kr/SafetyRestrntInfo?KEY=12200392d4a94e059fec5a6fa315518c&pIndex="+page+"&pSize=10";
 	            
-	            DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
-	            DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
-	            Document doc = dBuilder.parse(url);
-	            
-	            
-	            // root tag 
-	            doc.getDocumentElement().normalize();
-	            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-	            
-	            // 파싱할 tag
-	            NodeList nList = doc.getElementsByTagName("row");
-	            
-	            System.out.println("파싱할 리스트 수 : "+ nList.getLength());
-	            
-	            for(int temp = 0; temp < nList.getLength(); temp++){
-	               Node nNode = nList.item(temp);
-	               if(nNode.getNodeType() == Node.ELEMENT_NODE){
-	                  
-	                  Element eElement = (Element) nNode;
-	                  System.out.println("######################");
-	                  //System.out.println(eElement.getTextContent());
-	                  
-	                  System.out.println("상호명  : " + Test.getTagValue("BIZPLC_NM", eElement));
-	                  System.out.println("구주소  : " + Test.getTagValue("REFINE_LOTNO_ADDR", eElement));
-	                  System.out.println("도로명주소  : " + Test.getTagValue("REFINE_ROADNM_ADDR", eElement));
-	                  
-	                  RestDTO pDTO = new RestDTO();
-	                  
-	                  pDTO.setBizplc_nm(Test.getTagValue("BIZPLC_NM", eElement)); //상호명
-	          		  pDTO.setRefine_lotno_addr(Test.getTagValue("REFINE_LOTNO_ADDR", eElement)); //구주소
-	          		  //pDTO.setRefine_roadnm_addr(Test.getTagValue("REFINE_ROADNM_ADDR", eElement)); //도로명주소
-	          		  //pDTO.setRefine_wgs84_lat(Test.getTagValue("REFINE_WGS84_LAT", eElement)); //위도
-	          		  //pDTO.setRefine_wgs84_logt(Test.getTagValue("REFINE_WGS84_LOGT", eElement)); //경도
-	          		
-	          		  rList.add(pDTO);
-	          		 //HashSet<RestDTO> pSet = new HashSet<>(rList);
-	          		 //r2List = new ArrayList<>(pSet);
-	          		
-	               }   // for end
-	            }   // if end
-	            
-	            page += 1;
-	            System.out.println("page number : "+page);
-	            if(page > 5){   
-	               break;
-	            }
-	         }   // while end
-	         
-	      } catch (Exception e){   
-	         e.printStackTrace();
-	      }   // try~catch end
-
-	
+		if(rList == null) {
+	          	rList = new ArrayList<>();
+	    }
+	    
 		model.addAttribute("rList",rList);
+		
 		log.info("map.do end!!");
+		
+		rList = null;
+	
 		
 		return "/map/map";
 	
@@ -193,6 +115,88 @@ public class RestController {
 		
 		log.info("mapForGeolocation 시작!!");
 		
-		return "/map/mapForGeolocation";}
+		return "/map/mapForGeolocation";
+	}
+	
+	@RequestMapping(value="rest/SelfCheck.do")
+	public String SC() throws Exception {
 		
+		log.info("SC start!");
+		
+		return "/rest/SelfCheck";
+	}
+	
+	@RequestMapping(value="rest/selfCheck.do")
+	public String selfCheck(HttpServletRequest request, HttpServletResponse response,
+			ModelMap model
+			, @RequestParam(value="f", required=false) String[] queryString) throws Exception{
+		
+		String air = CmmUtil.nvl(request.getParameter("air"));
+		String distance = CmmUtil.nvl(request.getParameter("distance"));
+		String time = CmmUtil.nvl(request.getParameter("time"));
+		String scale = CmmUtil.nvl(request.getParameter("scale"));
+		String activity = CmmUtil.nvl(request.getParameter("activity"));
+		String manager = CmmUtil.nvl(request.getParameter("manager"));
+		String hdisinfectant = CmmUtil.nvl(request.getParameter("hdisinfectant"));
+		String mask = CmmUtil.nvl(request.getParameter("mask"));
+		String announcement = CmmUtil.nvl(request.getParameter("announcement"));
+		String disinfection = CmmUtil.nvl(request.getParameter("disinfection"));
+		String namecheck = CmmUtil.nvl(request.getParameter("namecheck"));
+		
+		SelfCheckDTO pDTO = new SelfCheckDTO();
+		
+		pDTO.setAir(air);
+		pDTO.setDistance(distance);
+		pDTO.setTime(time);
+		pDTO.setScale(scale);
+		pDTO.setActivity(activity);
+		pDTO.setManager(manager);
+		pDTO.setHdisinfectant(hdisinfectant);
+		pDTO.setMask(mask);
+		pDTO.setAnnouncement(announcement);
+		pDTO.setDisinfection(disinfection);
+		pDTO.setNamecheck(namecheck);
+		
+		int res = RestService.selfCheck(pDTO);
+		
+		log.info(res);
+		
+		String msg = "";
+	
+		if(res == 1) {
+			msg = "등록이 완료되었습니다.";
+		}
+		else{
+			msg = "등록 실패";
+		}
+		
+		model.addAttribute("msg", msg);
+		
+		return "/rest/Msg";
+	}
+	
+	@RequestMapping(value = "rest/restDetail.do", method = RequestMethod.GET)
+	public String rest_detail(HttpServletRequest request, HttpServletResponse reponse, ModelMap model,HttpSession session) throws Exception {
+		log.info(this.getClass().getName() + "restDetail start!");
+		
+		String safety_restrnt_no = request.getParameter("no");
+		
+		RestDTO pDTO = new RestDTO();
+		pDTO.setSafety_restrnt_no(safety_restrnt_no);
+		
+		RestDTO rDTO = RestService.getRestInfoDetail(pDTO);
+		
+		//rList = null;
+		//pSet = null;
+		//r2List = null;
+		
+		
+		
+		model.addAttribute("rDTO", rDTO);
+		
+		log.info("restDetail.do end!!");
+		
+		return "/rest/restDetail";
+	
+	}
 }

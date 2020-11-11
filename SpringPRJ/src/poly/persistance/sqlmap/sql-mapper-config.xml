@@ -7,5 +7,9 @@
 		<typeAlias type="poly.dto.DummyDTO" alias="DummyDTO"/>
 		<typeAlias type="poly.dto.UserInfoDTO" alias="UserInfoDTO"/>
 		<typeAlias type="poly.dto.SafeDTO" alias="SafeDTO"/>
+		<typeAlias type="poly.dto.NUserInfoDTO" alias="NUserInfoDTO"/>
+		<typeAlias type="poly.dto.UserDTO" alias="UserDTO"/>
+		<typeAlias type="poly.dto.RestDTO" alias="RestDTO"/>
+		<typeAlias type="poly.dto.SelfCheckDTO" alias="SelfCheckDTO"/>
     </typeAliases>
 </configuration>

@@ -4,7 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사업자 회원가입화면</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>사업자 회원가입</title>
+
+
+
 
 <script type="text/javascript">
 	// 회원가입 유효성 체크
@@ -80,67 +85,116 @@
 	}
 </script>
 
-	
-	
+
+
+
+
+
+ <!-- Font Icon -->
+    <link rel="stylesheet" href="../fonts1/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="../css1/style.css">
 	
 </head>
-<body>
- <h1>사업자 회원가입 화면</h1>
-  
-  <br><br>
-  
-   <form name="f" action="/safe/insertSafeUserInfo.do" method="post" onsubmit="return doRegUserCheck(this);">
-   <!-- 사용자가 입력하는 입력 양식 -->
-    <fieldset>
-            <legend>필수정보</legend>
-            
-            <br>
-            
-            아이디* : <input type="text" name="user_id" size="20" maxlength="20" autofocus><br><br>
-            
-           
-            이름* : <input type="text" name="user_name"><br><br>
-          
-                        
-            비밀번호* : <input type="password" name="password" size="20" maxlength="10"><br><br>
-    
-            비밀번호 확인* : <input type="password" name="password2" size="20"><br><br>
-            
-	   
-	  email*<input type="email"><br><br>
-	  
-	  
-	             <fieldset>
-            주소* : <input type="text" name="addr1">
-           <br><br>
-            주소상세 : <input type="text" name="addr2">
-            <br>
-            </fieldset> 
-            <br>
-            
-            
-            상호명* : <input type="text" name="storename"><br><br>
-            
-            
-            사업자번호* : <input type="text" name="bnumber"><br><br> 
-            
-           
-            핸드폰번호* : <input type="text" name="pnumber"><br><br>
-       
-            
-            
-            
+<body>  
 
-	
-	 
+
+
       
-    
-            <br>
-       </fieldset>
-        <input type="submit" value="제출하기">
-        <input type="reset" value="다시하기">
+         <form name="f" action="/safe/insertSafeUserInfo.do" method="post" onsubmit="return doRegUserCheck(this);">
         
-        </form>
+        <!-- 부트스트랩 시작 -->
+            <div class="main">
+
+        <section class="signup">
+            <!-- <img src="images/signup-bg.jpg" alt=""> -->
+            <div class="container">
+                <div class="signup-content">
+                    <form method="POST" id="signup-form" class="signup-form">
+                        <h2 class="form-title">회원가입</h2>
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="user_id" placeholder="아이디"/>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="user_name" placeholder="이름"/>
+                        </div>
+                           
+                        <div class="form-group">
+                            <input type="password" class="form-input" name="password" placeholder="비밀번호"/>
+                            <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                        </div>
+                        
+                       
+                           
+                        <div class="form-group">
+                           <input type="password" class="form-input" name="password2" placeholder="비밀번호 확인"/>
+                             <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                        </div>
+                        
+                         
+                        
+                         <div class="form-group">
+                            <input type="email" class="form-input" name="email"  placeholder="Email"/>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="addr1" placeholder="주소"/>
+                        </div>
+                        
+                        
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="addr2" placeholder="상세주소"/>
+                        </div>
+                        
+                          
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="storename" placeholder="상호명"/>
+                        </div>
+                        
+                        
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="bnumber" placeholder="사업자번호"/>
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="pnumber" placeholder="휴대전화"/>
+                        </div>
+                        
+                      
+                        
+                           
+                        <div class="form-group">
+                            <input type="submit" name="submit" class="form-submit" value="Sign up"/>
+                            
+                            
+                            
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </section>
+
+    </div>
+     </form>
+     
+     
+
+    <!-- JS -->
+    <script src="../vendor1/jquery/jquery.min.js"></script>
+    <script src="../js1/main.js"></script>
 
 </body>
 </html>

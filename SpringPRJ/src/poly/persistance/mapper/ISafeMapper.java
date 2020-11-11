@@ -1,6 +1,7 @@
 package poly.persistance.mapper;
 
 import config.Mapper;
+import poly.dto.NUserInfoDTO;
 import poly.dto.SafeDTO;
 
 
@@ -13,6 +14,18 @@ public interface ISafeMapper {
 
 	
 	SafeDTO getUserSafeLoginCheck(SafeDTO pDTO) throws Exception;
+
+	
+	//개인회원
+	
+
+	int insertNUserInfo(NUserInfoDTO pDTO) throws Exception;
+
+	
+	NUserInfoDTO getNUserExists(NUserInfoDTO pDTO) throws Exception;
+	
+	
+	NUserInfoDTO getNUserLoginCheck(NUserInfoDTO pDTO) throws Exception;
 
 	
 

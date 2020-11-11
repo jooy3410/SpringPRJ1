@@ -10,6 +10,7 @@ public class SafeDTO {
 	private String storename;
 	private String bnumber;
 	private String pnumber;
+	private String buser;
 	private String reg_id;
 	private String reg_dt;
 	private String chg_id;
@@ -72,6 +73,12 @@ public class SafeDTO {
 	public void setPnumber(String pnumber) {
 		this.pnumber = pnumber;
 	}
+	public String getBuser() {
+		return buser;
+	}
+	public void setBuser(String buser) {
+		this.buser = buser;
+	}
 	public String getReg_id() {
 		return reg_id;
 	}
@@ -103,5 +110,4 @@ public class SafeDTO {
 		this.exists_yn = exists_yn;
 	}
 	
-
 }

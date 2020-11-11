@@ -1,12 +1,27 @@
 package poly.dto;
+
+import java.util.List;
+
 public class RestDTO {
 
+	private String seq;
 	private String bizplc_nm;
 	private String refine_roadnm_addr;
 	private String refine_lotno_addr; 
 	private String refine_wgs84_lat;
 	private String refine_wgs84_logt;
 	public String safety_restrnt_no;
+	private String signgu_nm;
+	private String detail_addr;
+	private String sido_nm;
+	private String indutype_nm;
+	private String indutype_detail_nm;
+	
+	
+	
+	
+	
+	private List<RestDTO> pList;
 	
 	@Override
 	public int hashCode(){
@@ -24,6 +39,65 @@ public class RestDTO {
 	return false;
 	}
 	
+	
+	
+	
+	public List<RestDTO> getpList() {
+		return pList;
+	}
+
+	public void setpList(List<RestDTO> pList) {
+		this.pList = pList;
+	}
+
+	public String getIndutype_nm() {
+		return indutype_nm;
+	}
+
+	public void setIndutype_nm(String indutype_nm) {
+		this.indutype_nm = indutype_nm;
+	}
+
+	public String getIndutype_detail_nm() {
+		return indutype_detail_nm;
+	}
+
+	public void setIndutype_detail_nm(String indutype_detail_nm) {
+		this.indutype_detail_nm = indutype_detail_nm;
+	}
+
+	public String getSigngu_nm() {
+		return signgu_nm;
+	}
+
+	public void setSigngu_nm(String signgu_nm) {
+		this.signgu_nm = signgu_nm;
+	}
+
+	public String getDetail_addr() {
+		return detail_addr;
+	}
+
+	public void setDetail_addr(String detail_addr) {
+		this.detail_addr = detail_addr;
+	}
+
+	public String getSido_nm() {
+		return sido_nm;
+	}
+
+	public void setSido_nm(String sido_nm) {
+		this.sido_nm = sido_nm;
+	}
+
+	public String getSeq() {
+		return seq;
+	}
+
+	public void setSeq(String seq) {
+		this.seq = seq;
+	}
+
 	public String getRefine_lotno_addr() {
 		return refine_lotno_addr;
 	}
