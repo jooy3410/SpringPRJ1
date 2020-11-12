@@ -151,7 +151,7 @@ a {
 	<!-- END nav -->
 
 	<div class="hero-wrap1 hero-wrap-3"
-		style="background-image: url('../images/saferest_1.jpg'); background-attachment: fixed; background-repeat: no-repeat; background-position: center; background-size: 50% 50%;">
+		style="background-image: url('../images/saferest_1.jpg');  background-repeat: no-repeat; background-position: center; background-size: 50% 50%;">
 		<div class="overlay"></div>
 		<div class="container">
 			<div
