@@ -113,7 +113,7 @@
                 <div class="signup-content">
                     <form method="POST" id="signup-form" class="signup-form">
                         <h2 class="form-title">회원가입</h2>
-                        <input type="radio" name="buser" value="1" style="visibility: hidden;" checked/>
+                        
                         <div class="form-group">
                             <input type="text" class="form-input" name="user_id" placeholder="아이디"/>
                         </div>

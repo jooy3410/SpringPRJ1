@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import poly.dto.PagingDTO;
 import poly.dto.RestDTO;
@@ -31,10 +32,23 @@ public class RestController {
 
 	private Logger log = Logger.getLogger(this.getClass());
 	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String Index(HttpServletRequest request, HttpServletResponse reponse, ModelMap model, HttpSession session) throws Exception {
+		log.info(getClass().getName() + "index start");
+		
+		int res = RestService.countBoard();
+		
+		int num = RestService.countSC();
+		
+		model.addAttribute("res", String.valueOf(res));
+		model.addAttribute("num", String.valueOf(num));
+		
+		return "/index"; 
+	}
 	
-	
+	//초기 게시판 리스트
 	@RequestMapping(value = "rest/rest.do", method = RequestMethod.GET)
-	public String rest(HttpServletRequest request, HttpServletResponse reponse, ModelMap model,HttpSession session) throws Exception {
+	public String rest(HttpServletRequest request, HttpServletResponse reponse, ModelMap model, HttpSession session) throws Exception {
 		log.info(this.getClass().getName() + "rest start!");
 
 		List<String> rList = RestService.getRestInfo();
@@ -44,11 +58,8 @@ public class RestController {
 	          	rList = new ArrayList<>();
 	    }
 	      
-	    
         //HashSet<RestDTO> pSet = new HashSet<>(rList);
         //ArrayList<RestDTO> r2List = new ArrayList<>(pSet);
-	 
-
 	
 		model.addAttribute("rList",rList);
 		
@@ -58,11 +69,11 @@ public class RestController {
 		
 		log.info("rest.do end!!");
 		
-		return "/rest/rest";
+		return "/rest/rest2";
 	
 	}
 
-	//페이징 컨트롤러
+	    //페이징 처리 안심식당 리스트
 		@RequestMapping(value="rest/restPaging.do")
 		public String boardList(PagingDTO pDTO, Model model
 				, @RequestParam(value="nowPage", required=false)String nowPage
@@ -86,7 +97,33 @@ public class RestController {
 			log.info(this.getClass());
 			return "rest/restPaging";
 		}
+		
+		//상호명 찾기, Search 기능
+		@RequestMapping(value = "rest/restSearch", method=RequestMethod.POST)
+		@ResponseBody
+		public List<RestDTO> restSearchList(HttpServletRequest request)throws Exception{
+			//컨트롤러로 들어옴
+			log.info(this.getClass() + ".rest/restSearchList start!!");
+			
+			//jsp 보낸값을 받는거
+			String bizplc_nm = CmmUtil.nvl(request.getParameter("name"));
+			//cmmutil .src > util > cmmutil 함수 값이 널이면 ""으로 바꿔주는 것
+			//ajax data {}, form name, ?title=값
+			log.info("name: " +bizplc_nm);
+			
+			RestDTO eDTO = new RestDTO();
+			eDTO.setBizplc_nm(bizplc_nm);
+			
+			List<RestDTO> eList = RestService.getRestSearchList(eDTO);
+			
+			log.info("eList size : " + eList.size());
+
+			log.info(this.getClass() + ".rest/restSearchList end!!");
+			
+			return eList;
+		}
 	
+	//상세페이지 내 지도 마커찍기
 	@RequestMapping(value = "map/map.do", method = RequestMethod.GET)
 	public String Map2Service(HttpServletRequest request, HttpServletResponse reponse, ModelMap model,HttpSession session) throws Exception {
 		log.info(this.getClass().getName() + "MAP start!");
@@ -118,15 +155,14 @@ public class RestController {
 		return "/map/mapForGeolocation";
 	}
 	
+	//자가점검표 
 	@RequestMapping(value="rest/SelfCheck.do")
-	public String SC() throws Exception {
-		
-		log.info("SC start!");
-		
-		return "/rest/SelfCheck";
+	public String selfcheck(){
+		return "rest/SelfCheck";
 	}
+
 	
-	@RequestMapping(value="rest/selfCheck.do")
+	@RequestMapping(value="rest/SelfCheckdetail.do")
 	public String selfCheck(HttpServletRequest request, HttpServletResponse response,
 			ModelMap model
 			, @RequestParam(value="f", required=false) String[] queryString) throws Exception{
@@ -175,6 +211,7 @@ public class RestController {
 		return "/rest/Msg";
 	}
 	
+	//안심식당 상세페이지
 	@RequestMapping(value = "rest/restDetail.do", method = RequestMethod.GET)
 	public String rest_detail(HttpServletRequest request, HttpServletResponse reponse, ModelMap model,HttpSession session) throws Exception {
 		log.info(this.getClass().getName() + "restDetail start!");
@@ -190,8 +227,6 @@ public class RestController {
 		//pSet = null;
 		//r2List = null;
 		
-		
-		
 		model.addAttribute("rDTO", rDTO);
 		
 		log.info("restDetail.do end!!");
@@ -199,4 +234,59 @@ public class RestController {
 		return "/rest/restDetail";
 	
 	}
+	
+	//자가점검표 리스트
+	@RequestMapping(value="rest/selfCheckList.do")
+	public String SCList(PagingDTO pDTO, Model model
+			, @RequestParam(value="nowPage", required=false)String nowPage
+			, @RequestParam(value="cntPerPage", required=false)String cntPerPage) throws Exception{
+		
+		int total = RestService.countBoard();
+		
+		if (nowPage == null && cntPerPage == null) {
+			nowPage = "1";
+			cntPerPage = "20";
+		} else if (nowPage == null) {
+			nowPage = "1";
+		} else if (cntPerPage == null) { 
+			cntPerPage = "20";
+		}
+		
+		pDTO = new PagingDTO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		
+		model.addAttribute("paging", pDTO);
+		model.addAttribute("viewAll", RestService.selectBoard(pDTO));
+		log.info(this.getClass());
+		return "rest/selfCheckList";
+	}
+	
+	//자가점검표 상세페이지
+	@RequestMapping(value = "rest/SelfCheckDetail.do", method = RequestMethod.GET)
+	public String sc_detail(HttpServletRequest request, HttpServletResponse reponse, ModelMap model,HttpSession session) throws Exception {
+		log.info(this.getClass().getName() + "SCDetail start!");
+		
+		String safety_restrnt_no = request.getParameter("no");
+		
+		RestDTO pDTO = new RestDTO();
+		pDTO.setSafety_restrnt_no(safety_restrnt_no);
+		
+		RestDTO rDTO = RestService.getRestInfoDetail(pDTO);
+		
+		//rList = null;
+		//pSet = null;
+		//r2List = null;
+		
+		model.addAttribute("rDTO", rDTO);
+		
+		log.info("SCDetail.do end!!");
+		
+		return "/rest/SelfCheckDetail";
+	
+	}
+	
+	@RequestMapping(value="rest/about.do")
+	public String about(){
+		return "rest/about2";
+	}
+
 }

@@ -2,9 +2,9 @@
 <%@page import="static poly.util.CmmUtil.nvl"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%-- <%
+ <%
 	RestDTO rDTO = (RestDTO) request.getAttribute("rDTO");
-%> --%>
+%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -67,7 +67,7 @@
           <li class="nav-item"><a href="/rest/notice.do" class="nav-link">공지사항</a></li>
           <li class="nav-item"><a href="/rest/about.do" class="nav-link">소개</a></li>
           <li class="nav-item"><a href="/rest/restPaging.do" class="nav-link">안심식당</a></li>
-          <li class="nav-item"><a href="/rest/SelfCheck.do" class="nav-link">자가점검표</a></li>
+          <li class="nav-item"><a href="/rest/selfCheckList.do" class="nav-link">자가점검표</a></li>
           <li class="nav-item"><a href="event.html" class="nav-link">마이페이지</a></li>
           <li class="nav-item cta"><a href="/safe/Login.do" class="nav-link"><span>Login</span></a></li>
         </ul>
@@ -82,7 +82,7 @@
         <div class="row no-gutters slider-text align-items-center justify-content-center" data-scrollax-parent="true">
           <div class="col-md-8 ftco-animate text-center">
             <p class="breadcrumbs"><span class="mr-2">Safe</a>
-            <h1 class="mb-3 bread">안심식당</h1>
+            <h1 class="mb-3 bread">자가 점검표</h1>
           </div>
         </div>
       </div>
@@ -91,6 +91,13 @@
     <section class="ftco-section contact-section ftco-degree-bg">
       <div class="container">
         <div class="row block-9">
+        	<div class="col-12">
+            <h2 class="h4 text-center">안심식당 자가점검표</h2>
+            </div>
+        	<div class="col-12 text-center">
+            <p><span>안심식당 번호 : </span> <%=nvl(rDTO.getSafety_restrnt_no())%> &nbsp;&nbsp;&nbsp; <span>상호명 : </span> <%=nvl(rDTO.getBizplc_nm())%></p>
+          	</div>
+        <div class="col-12 text-center">
     <form name="f" method="post" action="/rest/selfCheck.do" id="submit">
 	<table border="2">
 		<tbody class="center">
@@ -198,7 +205,6 @@
 		</tbody>
 	</table>
 	<br>
-	<input type="submit" value="제출">
 	</form>
         </div>
       </div>

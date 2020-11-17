@@ -7,4 +7,6 @@ import poly.dto.SelfCheckDTO;
 public interface ISelfCheckMapper {
 
 	int insertSCInfo(SelfCheckDTO pDTO) throws Exception;
+	
+	int countSC() throws Exception;
 }

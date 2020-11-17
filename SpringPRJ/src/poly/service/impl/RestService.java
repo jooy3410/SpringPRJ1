@@ -48,7 +48,6 @@ public class RestService implements IRestService{
 		log.info(this.getClass().getName() + "start!");
 		
 		ArrayList<RestDTO> rList= new ArrayList<RestDTO>();
-		ArrayList<RestDTO> r2List = null;
 		
 		int page = 1;   // 페이지 초기값 
 	      try{
@@ -99,19 +98,20 @@ public class RestService implements IRestService{
 	          		  pDTO.setSigngu_nm(Test.getTagValue("SIGNGU_NM", eElement));
 	          		  pDTO.setSido_nm(Test.getTagValue("SIDO_NM", eElement));
 	          		  pDTO.setIndutype_nm(Test.getTagValue("INDUTYPE_NM", eElement));
-	          		  pDTO.setIndutype_detail_nm(Test.getTagValue("INDUTYPE_DETAIL_NM", eElement));
+	          		  pDTO.setIndutype_detail_nm(Test.getTagValue("INDUTYPE_DETAIL_NM", eElement));//업종상세명
+	          		  pDTO.setTelno(Test.getTagValue("TELNO", eElement));//전화번호
 	          		  
+	          		  //log.info("전화번호 : " + pDTO.getTelno());
 	          		  //pDTO.setRefine_wgs84_lat(Test.getTagValue("REFINE_WGS84_LAT", eElement)); //위도
 	          		  //pDTO.setRefine_wgs84_logt(Test.getTagValue("REFINE_WGS84_LOGT", eElement)); //경도
-	          		  		                  
+	          		  	
+	          		  
 	          		  rList.add(pDTO);
-	          		  HashSet<RestDTO> pSet = new HashSet<>(rList);
-	          		  r2List = new ArrayList<>(pSet);
 	          			
 	          		  i++;
 	          		  	   	          		  
 	          		  restMapper.InsertRestInfo(pDTO);
-	          		           		  
+	          		          		  
 	          		
 	               }   // for end
 	            }   // if end
@@ -160,6 +160,11 @@ public class RestService implements IRestService{
 		log.info(res);
 		
 		return res;
+	}
+	
+	@Override
+	public int countSC() throws Exception{
+		return selfCheckMapper.countSC();
 	}
 	
 	@Override

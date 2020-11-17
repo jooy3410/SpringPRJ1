@@ -16,9 +16,15 @@ public class RestDTO {
 	private String sido_nm;
 	private String indutype_nm;
 	private String indutype_detail_nm;
-	
-	
-	
+	private String telno;
+
+	public String getTelno() {
+		return telno;
+	}
+
+	public void setTelno(String telno) {
+		this.telno = telno;
+	}
 	
 	
 	private List<RestDTO> pList;

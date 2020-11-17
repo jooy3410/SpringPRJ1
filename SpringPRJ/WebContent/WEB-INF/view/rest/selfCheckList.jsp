@@ -107,7 +107,7 @@ a {
 								resHTML += '<tr>';
 								resHTML += '<td>' + ++cnt;
 								+'</td>';
-								resHTML += '<td><a href="/rest/restDetail.do?no='
+								resHTML += '<td><a href="/rest/SelfCheckDetail.do?no='
 										+ data[i].safety_restrnt_no
 										+ '">'
 										+ data[i].bizplc_nm + '</a></td>';
@@ -125,7 +125,7 @@ a {
 <script>
 	function selChange() {
 		var sel = document.getElementById('cntPerPage').value;
-		location.href = "/rest/restPaging.do?nowPage=${paging.nowPage}&cntPerPage="
+		location.href = "/rest/selfCheckList.do?nowPage=${paging.nowPage}&cntPerPage="
 				+ sel;
 	}
 </script>
@@ -154,8 +154,8 @@ a {
 	</nav>
 	<!-- END nav -->
 
-	<div class="hero-wrap1 hero-wrap-3"
-		style="background-image: url('../images/course-6.jpg'); background-repeat: no-repeat; background-position: center; background-size: 50% 75%;">
+	<div class="hero-wrap1 hero-wrap-2"
+		style="background-image: url('../images/course-4.jpg'); background-repeat: no-repeat; background-position: center; background-size: 50% 75%;">
 		<div class="overlay"></div>
 		<div class="container">
 			<div
@@ -200,7 +200,7 @@ a {
 							<td><c:out value="${num}" /> <c:set var="num"
 									value="${num + 1}" /></td>
 							<td><a
-								href="/rest/restDetail.do?no=${list.safety_restrnt_no }">${list.bizplc_nm }</a></td>
+								href="/rest/SelfCheckDetail.do?no=${list.safety_restrnt_no }">${list.bizplc_nm }</a></td>
 							<td>${list.refine_lotno_addr }<script>
 								console.log();
 							</script></td>
@@ -217,7 +217,7 @@ a {
 							<ul>
 								<c:if test="${paging.startPage != 1 }">
 									<li><a
-										href="/rest/restPaging.do?nowPage=${paging.startPage - 1 }&cntPerPage=${paging.cntPerPage}">&lt;</a></li>
+										href="/rest/selfCheckList.do?nowPage=${paging.startPage - 1 }&cntPerPage=${paging.cntPerPage}">&lt;</a></li>
 								</c:if>
 								<c:forEach begin="${paging.startPage }" end="${paging.endPage }"
 									var="p">
@@ -227,13 +227,13 @@ a {
 										</c:when>
 										<c:when test="${p != paging.nowPage }">
 											<li><a
-												href="/rest/restPaging.do?nowPage=${p }&cntPerPage=${paging.cntPerPage}">${p }</a></li>
+												href="/rest/selfCheckList.do?nowPage=${p }&cntPerPage=${paging.cntPerPage}">${p }</a></li>
 										</c:when>
 									</c:choose>
 								</c:forEach>
 								<c:if test="${paging.endPage != paging.lastPage}">
 									<li><a
-										href="/rest/restPaging.do?nowPage=${paging.endPage+1 }&cntPerPage=${paging.cntPerPage}">&gt;</a></li>
+										href="/rest/selfCheckList.do?nowPage=${paging.endPage+1 }&cntPerPage=${paging.cntPerPage}">&gt;</a></li>
 								</c:if>
 								<div style="display: inline-block; margin:0;">
 							</ul>

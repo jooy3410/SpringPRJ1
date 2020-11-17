@@ -32,4 +32,7 @@
 			#{namecheck}
 		)
 	</insert>
+	<select id="countSC" resultType="int">
+		SELECT COUNT(*) FROM SELF_CHECK
+	</select>
 </mapper>

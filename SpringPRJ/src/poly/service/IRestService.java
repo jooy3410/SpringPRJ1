@@ -18,6 +18,8 @@ public interface IRestService {
 	
 	int countBoard() throws Exception;
 
+	int countSC() throws Exception;
+	
 	List<RestDTO> selectBoard(PagingDTO pDTO) throws Exception;
 
 	List<RestDTO> getRestSearchList(RestDTO eDTO) throws Exception;

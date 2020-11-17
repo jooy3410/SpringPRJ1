@@ -31,12 +31,7 @@ public class SafeController {
 		 * 메인페이지 컨트롤러 시작!!
 		 * ######################################
 		 */
-		@RequestMapping(value="safe/main")
-		public String main() {
-			log.info(this.getClass());
-			
-			return "/safe/main";
-		}
+		
 		
 		/*
 		 * #######################################
@@ -438,7 +433,7 @@ public class SafeController {
 			
 			//웹(회원정보 입력화면)에서 받는 정보를 저장할 변수
 			SafeDTO pDTO = null;
-			
+					
 			try {
 				
 				/*
@@ -449,6 +444,7 @@ public class SafeController {
 				String user_id = CmmUtil.nvl(request.getParameter("user_id"));
 				String password = CmmUtil.nvl(request.getParameter("password"));
 				// String 변수에 저장 끝
+				System.out.println();
 				
 				// 로그 필수
 				log.info("user_id : " + user_id);
@@ -464,7 +460,6 @@ public class SafeController {
 				pDTO = new SafeDTO();
 				
 				pDTO.setUser_id(user_id);
-				
 				//비밀번호는 절대 복호화되지 않도록 해시 알고리즘으로 암호화함
 				pDTO.setPassword(EncryptUtil.encHashSHA256(password));
 				
@@ -521,7 +516,7 @@ public class SafeController {
 				
 			}
 			
-			return "/safe/LoginResult";
+			return "/index";
 		}
 		
 		/*
@@ -538,16 +533,6 @@ public class SafeController {
 			
 			return "/safe/Login";
 		}
-		
-		
-		@RequestMapping(value="userpage/SignUp")
-		public String SignUp() {
-			log.info(this.getClass());
-			
-			return "/userpage/SignUp";
-		}
-		
-		
 		
 		
 		

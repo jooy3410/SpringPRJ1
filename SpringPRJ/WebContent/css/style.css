@@ -181,7 +181,12 @@ svg:not(:root) {
   overflow: hidden; }
 
 table {
-  border-collapse: collapse; }
+  border-collapse: collapse; 
+	}
+	
+table.tb th {text-align:center;
+}
+  
 
 caption {
   padding-top: 0.75rem;
@@ -488,7 +493,7 @@ pre {
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px; }
-
+  
 .no-gutters {
   margin-right: 0;
   margin-left: 0; }

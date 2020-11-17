@@ -46,14 +46,14 @@
 		resultType="SafeDTO">
 		SELECT DECODE(COUNT(1),0,'N','Y') AS EXISTS_YN
 		FROM
-		SAFEUSER_INFO
+		BUSER_INFO
 		WHERE EMAIL=#{email}
 	</select>
 	
 	<!-- 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 -->
 	<select id="getUserSafeLoginCheck" parameterType="SafeDTO" resultType="SafeDTO">
 		SELECT USER_ID, USER_NAME, EMAIL
-		FROM SAFEUSER_INFO
+		FROM BUSER_INFO
 		WHERE USER_ID = #{user_id}
 		AND PASSWORD = #{password}
 	</select>
@@ -62,7 +62,7 @@
 	
 		<!-- 개안회원 가입하기(회원정보 등록하기) -->
 	<insert id="insertNUserInfo" parameterType="NUserInfoDTO">
-		INSERT INTO NONUSER_INFO
+		INSERT INTO PUSER_INFO
 			(
 				USER_ID,
 				USER_NAME,
@@ -99,14 +99,14 @@
 		resultType="NUserInfoDTO">
 		SELECT DECODE(COUNT(1),0,'N','Y') AS EXISTS_YN
 		FROM
-		NONUSER_INFO
+		PUSER_INFO
 		WHERE EMAIL=#{email}
 	</select>
 	
 	<!-- 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 -->
 	<select id="getNUserLoginCheck" parameterType="NUserInfoDTO" resultType="NUserInfoDTO">
 		SELECT USER_ID, USER_NAME, EMAIL
-		FROM NONUSER_INFO
+		FROM PUSER_INFO
 		WHERE USER_ID = #{user_id}
 		AND PASSWORD = #{password}
 	</select>
